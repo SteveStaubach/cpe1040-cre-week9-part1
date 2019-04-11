@@ -27,7 +27,7 @@ def defaultmovement():
     else:
         x,y = 0,y+1
 def complexmovement():
-    global x,y,active,screen
+    global x,y,active,bitstring,screen
     if screen == 0:
         bitstatesave()
         if x == 4 and y == 4:
@@ -74,6 +74,8 @@ while True:
                 display.scroll("USIGN", delay=45)
                 counter = 1
             display.show(Image('05105:05105:05105:05105:00550'))
+            if button_a.is_pressed():
+                display.scroll(int(bitstring,2), delay=100)
         if y == 1:
             if counter == 0:
                 display.scroll("INTGR", delay=45)
