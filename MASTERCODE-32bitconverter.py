@@ -1,6 +1,6 @@
 from microbit import *
 import random,utime
-active,bits,pause,start,screen,x,y = False,[],1000,0,0,0,0
+active,bits,counter,pause,start,screen,x,y = False,[],0,850,0,0,0,0
 def bitstatesave():
     if active:
         bits.append('1')
@@ -41,7 +41,8 @@ def complexmovement():
             x,y,screen = 0,0,2
             display.clear()
             bitstring = ''.join(bits)
-            display.scroll(bitstring, delay=100)
+            display.scroll("SELECTION MENU", delay=45)
+            sleep(600)
         else:
             defaultmovement()
     elif screen == 2:
@@ -51,8 +52,8 @@ def complexmovement():
             y = 0
     active = False
 while True:
+    cursor()
     if screen <= 1:
-        cursor()
         while button_a.is_pressed():
             bitstatetoggle()
         if button_b.is_pressed():
@@ -67,19 +68,35 @@ while True:
                     complexmovement()
                 while screen == 0:
                     complexmovement()
-    else:
+    if screen == 2:
         if y == 0:
+            if counter == 0:
+                display.scroll("UNSIGN", delay=45)
+                counter = 1
             display.show(Image('05105:05105:05105:05105:00550'))
         if y == 1:
+            if counter == 0:
+                display.scroll("INTGR", delay=45)
+                counter = 1
             display.show(Image('05555:00510:00510:00510:05555'))
         if y == 2:
+            if counter == 0:
+                display.scroll("FLOAT", delay=45)
+                counter = 1
             display.show(Image('05555:05100:05550:05100:05100'))
         if y == 3:
-            display.show(Image('05550:05105:05100:05105:05550'))
+            if counter == 0:
+                display.scroll("ASCII", delay=45)
+                counter = 1
+            display.show(Image('00550:05101:05100:05101:00550'))
         if y == 4:
+            if counter == 0:
+                display.scroll("RESET", delay=45)
+                counter = 1
             display.show(Image('05550:05105:05550:05150:05105'))
         if button_b.is_pressed():
             while True:
                 if not button_b.is_pressed():
                     break
             complexmovement()
+            counter = 0
