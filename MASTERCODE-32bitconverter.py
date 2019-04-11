@@ -71,7 +71,7 @@ while True:
     if screen == 2:
         if y == 0:
             if counter == 0:
-                display.scroll("UNSIGN", delay=45)
+                display.scroll("USIGN", delay=45)
                 counter = 1
             display.show(Image('05105:05105:05105:05105:00550'))
         if y == 1:
