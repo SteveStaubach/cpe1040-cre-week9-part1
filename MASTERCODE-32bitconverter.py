@@ -46,18 +46,19 @@ def complexmovement():
             defaultmovement()
     active = False
 while True:
-    cursor()
-    while button_a.is_pressed():
-        bitstatetoggle()
-    if button_b.is_pressed():
-        start = utime.ticks_ms()
-        while True:
-            if not button_b.is_pressed():
-                break
-        if utime.ticks_diff(utime.ticks_ms(), start) < pause:
-            complexmovement()
-        else:
-            while screen == 1:
+    if screen <= 1:
+        cursor()
+        while button_a.is_pressed():
+            bitstatetoggle()
+        if button_b.is_pressed():
+            start = utime.ticks_ms()
+            while True:
+                if not button_b.is_pressed():
+                    break
+            if utime.ticks_diff(utime.ticks_ms(), start) < pause:
                 complexmovement()
-            while screen == 0:
-                complexmovement()
+            else:
+                while screen == 1:
+                    complexmovement()
+                while screen == 0:
+                    complexmovement()
