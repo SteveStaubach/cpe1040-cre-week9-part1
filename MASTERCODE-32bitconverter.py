@@ -1,6 +1,7 @@
 from microbit import *
+from array import *
 import random,utime
-active,bits,counter,pause,start,screen,x,y = False,[],0,850,0,0,0,0
+active,bits,counter,pause,start,screen,cordx,cordy = False,[],0,850,0,0,0,0
 def bitstatesave():
     if active:
         bits.append('1')
@@ -8,48 +9,57 @@ def bitstatesave():
         bits.append('0')
 def bitstatetoggle():
     global active
-    if display.get_pixel(x,y) == 0:
+    if display.get_pixel(cordx,cordy) == 0:
         active = True
     else:
         active = False
 def cursor():
-    cursor = display.set_pixel(x,y,6)
+    cursor = display.set_pixel(cordx,cordy,6)
     sleep(50)
     if active:
-        cursor = display.set_pixel(x,y,3)
+        cursor = display.set_pixel(cordx,cordy,3)
     else:
-        cursor = display.set_pixel(x,y,0)
+        cursor = display.set_pixel(cordx,cordy,0)
     sleep(50)
 def defaultmovement():
-    global x,y
-    if x < 4:
-        x = x+1
+    global cordx,cordy
+    if cordx < 4:
+        cordx = cordx+1
     else:
-        x,y = 0,y+1
+        cordx,cordy = 0,cordy+1
 def complexmovement():
-    global x,y,active,bitstring,screen
+    global cordx,cordy,active,bitstring,bitvalue,bituint,bitsint,BPF,bitfloat,screen
     if screen == 0:
         bitstatesave()
-        if x == 4 and y == 4:
-            x,y,screen = 0,0,1
+        if cordx == 4 and cordy == 4:
+            cordx,cordy,screen = 0,0,1
             display.clear()
         else:
             defaultmovement()
     elif screen == 1:
         bitstatesave()
-        if x == 1 and y == 1:
-            x,y,screen = 0,0,2
+        if cordx == 1 and cordy == 1:
+            cordx,cordy,screen = 0,0,2
             display.clear()
+# Def bit values
             bitstring = ''.join(bits)
+            bituint = int(bitstring,2)
+            bitfloat = array('f',bitstring)
+            if (bits[0]) == '1':
+                bits[:] = ['0' if x=='1' else '1' for x in bits]
+                sbits = ''.join(bits)
+                bitsint = (int(sbits,2)*(-1))-1
+            else:
+                bitsint = bituint
             display.scroll("SELECTION MENU", delay=45)
             sleep(600)
         else:
             defaultmovement()
     elif screen == 2:
-        if y < 4:
-            y = y+1
+        if cordy < 4:
+            cordy = cordy+1
         else:
-            y = 0
+            cordy = 0
     active = False
 while True:
     cursor()
@@ -69,29 +79,33 @@ while True:
                 while screen == 0:
                     complexmovement()
     if screen == 2:
-        if y == 0:
+        if cordy == 0:
             if counter == 0:
                 display.scroll("USIGN", delay=45)
                 counter = 1
             display.show(Image('05105:05105:05105:05105:00550'))
             if button_a.is_pressed():
-                display.scroll(int(bitstring,2), delay=100)
-        if y == 1:
+                display.scroll(bituint, delay=100)
+        elif cordy == 1:
             if counter == 0:
                 display.scroll("INTGR", delay=45)
                 counter = 1
             display.show(Image('05555:00510:00510:00510:05555'))
-        if y == 2:
+            if button_a.is_pressed():
+                display.scroll(bitsint, delay=100)
+        elif cordy == 2:
             if counter == 0:
                 display.scroll("FLOAT", delay=45)
                 counter = 1
             display.show(Image('05555:05100:05550:05100:05100'))
-        if y == 3:
+            if button_a.is_pressed():
+                display.scroll(bitfloat, delay=100)
+        elif cordy == 3:
             if counter == 0:
                 display.scroll("ASCII", delay=45)
                 counter = 1
             display.show(Image('00550:05101:05100:05101:00550'))
-        if y == 4:
+        elif cordy == 4:
             if counter == 0:
                 display.scroll("RESET", delay=45)
                 counter = 1
