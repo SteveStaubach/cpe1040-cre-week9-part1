@@ -28,7 +28,7 @@ def defaultmovement():
     else:
         cordx,cordy = 0,cordy+1
 def complexmovement():
-    global cordx,cordy,active,bitstring,bitvalue,bituint,bitsint,BPF,bitfloat,screen
+    global cordx,cordy,active,bitstring,bitvalue,bituint,bitsint,bitfloat,screen
     if screen == 0:
         bitstatesave()
         if cordx == 4 and cordy == 4:
@@ -44,13 +44,13 @@ def complexmovement():
 # Def bit values
             bitstring = ''.join(bits)
             bituint = int(bitstring,2)
-            bitfloat = array('f',bitstring)
             if (bits[0]) == '1':
                 bits[:] = ['0' if x=='1' else '1' for x in bits]
                 sbits = ''.join(bits)
                 bitsint = (int(sbits,2)*(-1))-1
             else:
                 bitsint = bituint
+            bitfloat = array("i",bits)
             display.scroll("SELECTION MENU", delay=45)
             sleep(600)
         else:
