@@ -13,6 +13,17 @@ def bitstatetoggle():
         active = True
     else:
         active = False
+def bitvaluecreation():
+    global bitstring,bitvalue,bituint,bitsint,bitfloat
+    bitstring = ''.join(bits)
+    bituint = int(bitstring,2)
+    if (bits[0]) == '1':
+        bits[:] = ['0' if x=='1' else '1' for x in bits]
+        sbits = ''.join(bits)
+        bitsint = (int(sbits,2)*(-1))-1
+    else:
+        bitsint = bituint
+    #bitfloat = array("i",bits)                                 Bookmark
 def cursor():
     cursor = display.set_pixel(cordx,cordy,6)
     sleep(50)
@@ -28,7 +39,7 @@ def defaultmovement():
     else:
         cordx,cordy = 0,cordy+1
 def complexmovement():
-    global cordx,cordy,active,bitstring,bitvalue,bituint,bitsint,bitfloat,screen
+    global cordx,cordy,active,screen
     if screen == 0:
         bitstatesave()
         if cordx == 4 and cordy == 4:
@@ -41,22 +52,13 @@ def complexmovement():
         if cordx == 1 and cordy == 1:
             cordx,cordy,screen = 0,0,2
             display.clear()
-# Def bit values
-            bitstring = ''.join(bits)
-            bituint = int(bitstring,2)
-            if (bits[0]) == '1':
-                bits[:] = ['0' if x=='1' else '1' for x in bits]
-                sbits = ''.join(bits)
-                bitsint = (int(sbits,2)*(-1))-1
-            else:
-                bitsint = bituint
-            bitfloat = array("i",bits)
+            bitvaluecreation()
             display.scroll("SELECTION MENU", delay=45)
             sleep(600)
         else:
             defaultmovement()
     elif screen == 2:
-        if cordy < 4:
+        if cordy < 3:
             cordy = cordy+1
         else:
             cordy = 0
@@ -105,11 +107,6 @@ while True:
                 display.scroll("ASCII", delay=45)
                 counter = 1
             display.show(Image('00550:05101:05100:05101:00550'))
-        elif cordy == 4:
-            if counter == 0:
-                display.scroll("RESET", delay=45)
-                counter = 1
-            display.show(Image('05550:05105:05550:05150:05105'))
         if button_b.is_pressed():
             while True:
                 if not button_b.is_pressed():
